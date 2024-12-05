@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Saga de Películas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+    gap: 10px; /* Espacio entre las películas */
+}
+
+.movie {
+    text-align: center;
+}
+
+.movie img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.movie:hover img {
+    transform: scale(1.05);
+}
+
+.movie h3 {
+    font-size: 14px;
+    margin: 8px 0;
+    color: #ffcc00;
+}
+
+/* Estilos del modal de la saga */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content-saga {
+    background-color: #000000; /* Fondo de la saga en color amarillo */
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    color: #000000;
+    text-align: center;
+    position: relative;
+}
+
+.modal-content-saga img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    border-radius: 8px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+.modal-content-saga h3 {
+    color: #000000;
+}
+
+.modal-content-saga p {
+    margin: 10px 0;
+    color: #333333;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.modal-content-saga p i {
+    margin-right: 8px;
+    color: #000000;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #ffffff; /* Cambié el color del "X" a blanco */
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #ffcc00;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: #ff0000;
+}
+
+/* Estilos del modal individual de la película */
+.modal-content-movie {
+    background-color: #1c1c1c; /* Fondo de la película en color oscuro */
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    color: #ffffff;
+    text-align: center;
+    position: relative; /* Añadido para que el "X" quede dentro del modal */
+}
+
+.modal-content-movie img {
+    width: 40%;
+    height: auto;
+    max-width: 200px;
+    border-radius: 8px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+.modal-content-movie h3 {
+    color: #ffffff;
+}
+
+.modal-content-movie p {
+    margin: 10px 0;
+    color: #b0b0b0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.modal-content-movie p i {
+    margin-right: 8px;
+    color: #ffffff;
+}
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center; color: #ffffff;">Saga de Películas</h1>
+
+<div class="grid">
+    <!-- SAGA - BAD BOYS -->
+    <div class="movie" onclick="openModal('modal')">
+        <img src="https://image.tmdb.org/t/p/original/1fQK3SjSwhoI2GuBb52pYnlGcJe.jpg" alt="SAGA - BAD BOYS">
+        <h3></h3>
+    </div>
+    <!-- SAGA - TWISTER -->
+<div class="movie" onclick="openModal('modalTwisterSaga')">
+    <img src="https://image.tmdb.org/t/p/original/s6jL8oqIQGkQ51tnTl7OKMofTIY.jpg" alt="SAGA - TWISTER">
+    <h3></h3>
+</div>
+<!-- SAGA - ESCUADRÓN SUICIDA -->
+<div class="movie" onclick="openModal('modalEscuadronSuicidaSaga')">
+    <img src="https://image.tmdb.org/t/p/original/qIWrWjm01lYjKrmjnefdXKtPGeV.jpg" alt="SAGA - ESCUADRÓN SUICIDA">
+    <h3></h3>
+</div>
+<!-- SAGA - CREED -->
+<div class="movie" onclick="openModal('modalCreedSaga')">
+    <img src="https://image.tmdb.org/t/p/original/aYNYlqizo280uDa4zOqESIXBdpz.jpg" alt="SAGA - CREED">
+    <h3></h3>
+</div>
+<!-- SAGA - NO MANCHES FRIDA -->
+<div class="movie" onclick="openModal('modalNoManchesFridaSaga')">
+    <img src="https://image.tmdb.org/t/p/original/5oyUlrWf605xclw6dmaH3lHttfo.jpg" alt="SAGA - NO MANCHES FRIDA">
+    <h3></h3>
+</div>
+<!-- SAGA - EL STAND DE LOS BESOS -->
+<div class="movie" onclick="openModal('modalElStandDeLosBesosSaga')">
+    <img src="https://image.tmdb.org/t/p/original/wY0OtbE3WvZFnGNL37Jw28RvUSx.jpg" alt="SAGA - EL STAND DE LOS BESOS">
+    <h3></h3>
+</div>
+<!-- SAGA - COMANDO ESPECIAL -->
+<div class="movie" onclick="openModal('modalComandoEspecialSaga')">
+    <img src="https://image.tmdb.org/t/p/original/2jnieFQrKR2j1tqDkx1U7NTTMZh.jpg" alt="SAGA - COMANDO ESPECIAL">
+    <h3></h3>
+</div>
+<!-- SAGA - A TRAVÉS DE MI VENTANA -->
+<div class="movie" onclick="openModal('modalAtravésDeMiVentanaSaga')">
+    <img src="https://image.tmdb.org/t/p/original/f7tfLoj37Px1JgJzQThB5m0JfGQ.jpg" alt="SAGA - A TRAVÉS DE MI VENTANA">
+    <h3></h3>
+</div>
+<!-- SAGA - 365 DÍAS -->
+<div class="movie" onclick="openModal('modal365DiasSaga')">
+    <img src="https://image.tmdb.org/t/p/original/AkYEOw8PSpUxx9w5a6WL60QKSYF.jpg" alt="SAGA - 365 DÍAS">
+    <h3></h3>
+</div>
+<!-- SAGA - REBEL MOON -->
+<div class="movie" onclick="openModal('modalRebelMoonSaga')">
+    <img src="https://image.tmdb.org/t/p/original/6HLBxS3bPVCTRsWiy17BYvZUcb9.jpg" alt="SAGA - REBEL MOON">
+    <h3></h3>
+</div>
+<!-- SAGA - GODZILLA -->
+<div class="movie" onclick="openModal('modalGodzillaSaga')">
+    <img src="https://image.tmdb.org/t/p/original/dXftJdA6IMemp8NaOAz2n8mPOGO.jpg" alt="SAGA - GODZILLA">
+    <h3></h3>
+</div>
+<!-- SAGA - DUNE -->
+<div class="movie" onclick="openModal('modalDuneSaga')">
+    <img src="https://image.tmdb.org/t/p/original/lxIGYkpvYjLtYtZH684AQft0FhD.jpg" alt="SAGA - DUNE">
+    <h3></h3>
+</div>
+</div>
+
+<!-- AQUI VAN TODOS LOS MODALES DE CADA SAGA -->
+
+<!-- Modal de la SAGA de BAD BOYS -->
+<div id="modal" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modal')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movie1')">
+                <img src="https://image.tmdb.org/t/p/original/e4pvy2sb3YnlfxerU3MJ6ov9tw1.jpg" alt="Bad Boys">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movie2')">
+                <img src="https://image.tmdb.org/t/p/original/yCvB5fG5aEPqa1St7ihY6KEAsHD.jpg" alt="Bad Boys ll">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movie3')">
+                <img src="https://image.tmdb.org/t/p/original/y95lQLnuNKdPAzw9F9Ab8kJ80c3.jpg" alt="Bad Boys for Life">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movie4')">
+                <img src="https://image.tmdb.org/t/p/original/oGythE98MYleE6mZlGs5oBGkux1.jpg" alt="Bad Boys: Ride or Die">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de TWISTER -->
+<div id="modalTwisterSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalTwisterSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieTwister1996')">
+                <img src="https://image.tmdb.org/t/p/original/fZ0Y2qSDKQJolrQhIDpTwx3GlYB.jpg" alt="Twister">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieTwisters2024')">
+                <img src="https://image.tmdb.org/t/p/original/pjnD08FlMAIXsfOLKQbvmO0f0MD.jpg" alt="Twisters">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de ESCUADRÓN SUICIDA -->
+<div id="modalEscuadronSuicidaSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalEscuadronSuicidaSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieEscuadronSuicida2021')">
+                <img src="https://image.tmdb.org/t/p/original/eLwqvLWs57iDO6HcDDHDpajLst3.jpg" alt="Escuadrón Suicida">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieElEscuadronSuicida2')">
+                <img src="https://image.tmdb.org/t/p/original/iCi4c4FvVdbaU1t8poH1gvzT6xM.jpg" alt="El Escuadrón Suicida">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de CREED -->
+<div id="modalCreedSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalCreedSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieCreed2015')">
+                <img src="https://image.tmdb.org/t/p/original/1BfTsk5VWuw8FCocAhCyqnRbEzq.jpg" alt="Creed">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieCreed2')">
+                <img src="https://image.tmdb.org/t/p/original/svZJfPeAnfjN2tGPNdwo21XHmGp.jpg" alt="Creed II">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieCreed3')">
+                <img src="https://image.tmdb.org/t/p/original/cvsXj3I9Q2iyyIo95AecSd1tad7.jpg" alt="Creed III">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de NO MANCHES FRIDA -->
+<div id="modalNoManchesFridaSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalNoManchesFridaSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieNoManchesFrida')">
+                <img src="https://image.tmdb.org/t/p/original/6HfyXfIEywLa2HvcswKi44dDKxL.jpg" alt="No Manches Frida">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieNoManchesFrida2')">
+                <img src="https://image.tmdb.org/t/p/original/rG7rDoTe1ZEa936eonDCkV76nkx.jpg" alt="No Manches Frida 2">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de EL STAND DE LOS BESOS -->
+<div id="modalElStandDeLosBesosSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalElStandDeLosBesosSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieElStandDeLosBesos')">
+                <img src="https://image.tmdb.org/t/p/original/7Dktk2ST6aL8h9Oe5rpk903VLhx.jpg" alt="El Stand de los Besos">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieElStandDeLosBesos2')">
+                <img src="https://image.tmdb.org/t/p/original/mb7wQv0adK3kjOUr9n93mANHhPJ.jpg" alt="El Stand de los Besos 2">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieElStandDeLosBesos3')">
+                <img src="https://image.tmdb.org/t/p/original/c7xcqnMDVQ5v1hJBm3AZ5YikNe6.jpg" alt="El Stand de los Besos 3">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de COMANDO ESPECIAL -->
+<div id="modalComandoEspecialSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalComandoEspecialSaga')">&times;</span>
+        <div class="grid">            
+            <div class="movie" onclick="openMovieModal('movieComandoEspecial')">
+                <img src="https://image.tmdb.org/t/p/original/q0iOz3PuS2kLKBC1mSGNRVzNxu5.jpg" alt="Comando Especial">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieComandoEspecial2')">
+                <img src="https://image.tmdb.org/t/p/original/850chzYHYbT3IISl6Q7dbBuFP2B.jpg" alt="Comando Especial 2">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de A TRAVÉS DE MI VENTANA -->
+<div id="modalAtravésDeMiVentanaSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalAtravésDeMiVentanaSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieAtravésDeMiVentana')">
+                <img src="https://image.tmdb.org/t/p/original/3F5MkMadQOWiZNVaNuOuw6UaK7a.jpg" alt="A través de mi ventana">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieAtravésDeMiVentana2')">
+                <img src="https://image.tmdb.org/t/p/original/hisRiTK0zCP1sXtlCSrmFRVOVlz.jpg" alt="A través del mar">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieAtravésDeMiVentana3')">
+                <img src="https://image.tmdb.org/t/p/original/1RxPBKMpHlcm5PORiPo6LHUV2ft.jpg" alt="A través de tu mirada">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA de 365 DÍAS -->
+<div id="modal365DiasSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modal365DiasSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movie365Dias1')">
+                <img src="https://image.tmdb.org/t/p/original/vth3EjIGimIzVkDU7bRN3AwtPOy.jpg" alt="365 Días">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movie365Dias2')">
+                <img src="https://image.tmdb.org/t/p/original/bbTDQZT4qABLpeN2dcfp4OAOQvO.jpg" alt="365 Días: Aquel día">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movie365Dias3')">
+                <img src="https://image.tmdb.org/t/p/original/dlyzCeI8wojBsUWdkNdO5AXtmZq.jpg" alt="365 Días: Más">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA Rebel Moon -->
+<div id="modalRebelMoonSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalRebelMoonSaga')">&times;</span>
+        <div class="grid">            
+            <div class="movie" onclick="openMovieModal('movieRebelMoon1')">
+                <img src="https://image.tmdb.org/t/p/original/ui4DrH1cKk2vkHshcUcGt2lKxCm.jpg" alt="Rebel Moon: Part 1">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieRebelMoon2')">
+                <img src="https://image.tmdb.org/t/p/original/95gnJZIk2rEkMO0Ch46x5CVjnms.jpg" alt="Rebel Moon: Part 2">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA GODZILLA -->
+<div id="modalGodzillaSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalGodzillaSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieGodzilla2014')">
+                <img src="https://image.tmdb.org/t/p/original/1t0FcqSsBs51PDhDkFd7EiEytU6.jpg" alt="Godzilla">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieGodzillaKingOfMonsters')">
+                <img src="https://image.tmdb.org/t/p/original/fQ40gmFM4p03tXwMxQQKh2cCBW4.jpg" alt="Godzilla: El rey de los Monstruos">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieGodzillaVsKong')">
+                <img src="https://image.tmdb.org/t/p/original/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg" alt="Godzilla vs. Kong">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieGodzillaXKong')">
+                <img src="https://image.tmdb.org/t/p/original/z1p34vh7dEOnLDmyCrlUVLuoDzd.jpg" alt="Godzilla y Kong: El nuevo imperio">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de la SAGA DUNE -->
+<div id="modalDuneSaga" class="modal">
+    <div class="modal-content-saga">
+        <span class="close" onclick="closeModal('modalDuneSaga')">&times;</span>
+        <div class="grid">
+            <div class="movie" onclick="openMovieModal('movieDune2021')">
+                <img src="https://image.tmdb.org/t/p/original/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune">
+                <h3></h3>
+            </div>
+            <div class="movie" onclick="openMovieModal('movieDunePart2')">
+                <img src="https://image.tmdb.org/t/p/original/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg" alt="Dune: Parte 2">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AQUI VAN LOS MODALES DE LAS SAGAS -->
+
+<!-- AQUI ESTA LA SAGA DE "BAD BOYS" -->
+
+<!-- BAD BOYS" -->
+
+<!-- Modal de BAD BOYS -->
+<div id="movie1" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movie1')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/e4pvy2sb3YnlfxerU3MJ6ov9tw1.jpg" alt="Bad Boys">
+        <h3>BAD BOYS</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 1995</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Comedia, Crimen, Suspense</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 58 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Un alijo de heroína valorada en unos 100 millones de dólares es robado del mismísimo depósito de la policía. El caso le será asignado a los agentes Burnett y Lowery, una pareja muy peculiar por los métodos que utilizan. La única pista que tienen para comenzar es la de un testigo que les ayudará a identificar a los atracadores y a la que tendrán que proteger.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3Nqa3N3MmhhNDFqNA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- BAD BOYS II -->
+
+<!-- Modal de Bad Boys II -->
+<div id="movie2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movie2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/yCvB5fG5aEPqa1St7ihY6KEAsHD.jpg" alt="Bad Boys II">
+        <h3>BAD BOYS II</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2003</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Crimen, Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 26 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> En esta nueva aventura, los detectives de narcóticos de Miami, Mike Lowrey (Will Smith) y Marcus Burnett (Martin Lawrence), son asignados para formar parte de un equipo de alta tecnología que trata de destapar la trama del diseño de éxtasis en Miami. Pero inconscientemente descubren una conspiración mortal que involucra a un despiadado señor de la droga, Johnny Tapia (Jordi Mollà), que está decidido a expandir su imperio y tomar el control del negocio de la venta de narcóticos en la ciudad matando a cualquiera que se interponga en su camino. Para empeorar las cosas, la bella hermana de Marcus, Syd (Gabrielle Union), una agente infiltrada de la DEA, se queda atrapada en el fuego cruzado, forzando a nuestros héroes a situarse al límite de la ley. Todo se complica todavía más cuando Cupido empieza a sobrevolar sobre Mike y Syd, provocando las iras de su protector hermano.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzA4NTI1OG8xZHE1Yg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- BAD BOYS FOR LIFE -->
+
+<!-- Modal de Bad Boys for Life -->
+<div id="movie3" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movie3')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/y95lQLnuNKdPAzw9F9Ab8kJ80c3.jpg" alt="Bad Boys for Life">
+        <h3>BAD BOYS FOR LIFE</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2020</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Suspenso, Acción, Crimen</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 3 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> El Departamento de Policía de Miami y su equipo de élite AMMO intentan derribar a Armando Armas, jefe de un cartel de la droga. Armando es un asesino de sangre fría con una naturaleza viciosa y contaminante. Él está comprometido con el trabajo del cartel y es enviado por su madre Isabel, para matar a Mike.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2htcGJpN2l5NmQ4dw==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- BAD BOYS: RIDE OR DIE -->
+
+<!-- Modal de Bad Boys: Ride or Die -->
+<div id="movie4" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movie4')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/oGythE98MYleE6mZlGs5oBGkux1.jpg" alt="Bad Boys: Ride or Die">
+        <h3>BAD BOYS: RIDE OR DIE</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2024</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 56 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Los policías más famosos del mundo regresan con su icónica mezcla de acción al límite y comedia escandalosa, pero esta vez con un giro inesperado: ¡Los mejores de Miami se dan a la fuga! Cuarta entrega de la saga (Dos policías rebeldes).</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2tjbno4MzAyaXBkcg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "TWISTER" -->
+
+<!-- TWISTER -->
+
+<!-- Modal de Twister -->
+<div id="movieTwister1996" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieTwister1996')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/fZ0Y2qSDKQJolrQhIDpTwx3GlYB.jpg" alt="Twister">
+        <h3>TWISTER</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 1996</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Aventura, Drama</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 53 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Dos grupos de científicos persiguen a las tormentas en busca de conseguir estudiar los comportamientos de los tornados. Ambos compiten por ser los primeros en analizar estos peculiares fenómenos meteorológicos desde dentro de un tornado. Su objetivo es analizar en profundidad la mayor tormenta que caerá sobre Oklahoma en el último medio siglo. En uno de los grupos está Jo Harding, una mujer que, con escasos medios y a punto de divorciarse, tendrá que pedir ayuda a su todavía marido Bill. Este se la da, pero se presenta acompañado de su nueva novia.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL254aXdramc3M3c4eA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- TWISTERS -->
+
+<!-- Modal de Twisters -->
+<div id="movieTwisters2024" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieTwisters2024')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/pjnD08FlMAIXsfOLKQbvmO0f0MD.jpg" alt="Twisters">
+        <h3>TWISTERS</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2024</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Suspenso, Acción</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Kate Carter, una ex cazadora de tormentas perseguida por un devastador encuentro con un tornado, es llamada por su amigo Javi de regreso a las llanuras para probar un nuevo e innovador sistema de seguimiento. Allí, se cruza con el encantador e imprudente ídolo de las redes sociales Tyler Owens y su estridente equipo. A medida que la temporada de tormentas se intensifica, se desatan fenómenos terroríficos nunca vistos, y Kate, Tyler y sus equipos competidores se encuentran directamente en el camino de múltiples sistemas de tormentas que convergen sobre Oklahoma en lo que será una lucha por sobrevivir.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzd3OTE1ZWczZjg5cQ==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "ESCUADRÓN SUICIDA" -->
+
+<!-- ESCUADRÓN SUICIDA -->
+
+<!-- Modal de Escuadrón Suicida -->
+<div id="movieEscuadronSuicida2021" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieEscuadronSuicida2021')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/eLwqvLWs57iDO6HcDDHDpajLst3.jpg" alt="Escuadrón Suicida 2021">
+        <h3>ESCUADRÓN SUICIDA</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2016</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Aventura, Fantasía</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 2 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Mientras el gobierno de EE.UU no tiene claro cómo responder a una visita alienígena a la Tierra con intenciones malignas, Amanda 'El Muro' Waller, la líder de la agencia secreta A.R.G.U.S., ofrece una curiosa solución: reclutar a los villanos más crueles, con habilidades letales e incluso mágicas, para que trabajen para ellos. Sin demasiadas opciones a dar una negativa, los ocho supervillanos más peligrosos del mundo acceden a colaborar con el Ejecutivo en peligrosas misiones secretas, casi suicidas, para así lograr limpiar su expediente.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2podjFrOXVsbXJ4Yg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- EL ESCUADRÓN SUICIDA -->
+
+<!-- Modal de El Escuadrón Suicida -->
+<div id="movieElEscuadronSuicida2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieElEscuadronSuicida2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/iCi4c4FvVdbaU1t8poH1gvzT6xM.jpg" alt="El Escuadrón Suicida 2">
+        <h3>EL ESCUADRÓN SUICIDA</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2021</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Comedia, Aventura</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 12 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Un grupo de super villanos se encuentran encerrados en Belle Reve, una prisión de alta seguridad con la tasa de mortalidad más alta de Estados Unidos. Para salir de allí harán cualquier cosa, incluso unirse al grupo Task Force X, dedicado a llevar a cabo misiones suicidas bajo las órdenes de Amanda Waller. Fuertemente armados son enviados a la isla Corto Maltese, una jungla repleta de enemigos.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2xiNnRjaXZ5eW83dg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "CREED" -->
+
+<!-- CREED -->
+
+<!-- Modal de Creed -->
+<div id="movieCreed2015" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieCreed2015')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/1BfTsk5VWuw8FCocAhCyqnRbEzq.jpg" alt="Creed">
+        <h3>CREED</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2015</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Drama</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 13 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Adonis Johnson no llego a conocer a su padre, el campeón del mundo de los pesos pesados Apollo Creed, que falleció antes de que él naciera. Sin embargo, nadie puede negar que lleva el boxeo en la sangre, por lo que pone rumbo a Filadelfia, el lugar en el que se celebró el legendario combate entre su padre y Rocky Balboa. Una vez allí, Adonis busca a Rocky y le pide que sea su entrenador. A pesar de que este insiste en que ya ha dejado ese mundo para siempre, Rocky ve en Adonis la fuerza y determinación que tenía su enconado rival, y que terminó por convertirse en su mejor amigo. Finalmente, acepta entrenarle a pesar de estar librando su propio combate contra un rival más letal que cualquiera a los que se enfrentó en el cuadrilátero.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzAzem9nOTdodjRpZA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- CREED II -->
+
+<!-- Modal de Creed II -->
+<div id="movieCreed2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieCreed2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/svZJfPeAnfjN2tGPNdwo21XHmGp.jpg" alt="Creed II">
+        <h3>CREED II</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2018</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Drama, Acción</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 9 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Adonis Creed se debate entre las obligaciones personales y el entrenamiento para su próxima gran pelea, con el desafío de su vida por delante. Enfrentarse a un oponente que tiene vínculos con el pasado de su familia solo intensifica su inminente batalla en el ring. Afortunadamente Rocky Balboa está a su lado a lo largo de todo el camino, y juntos se cuestionarán por lo que vale la pena luchar y descubrirán que nada es más importante que la familia...</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2tvemp3dGJhNWZvag==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- CREED III -->
+
+<!-- Modal de Creed III -->
+<div id="movieCreed3" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieCreed3')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/cvsXj3I9Q2iyyIo95AecSd1tad7.jpg" alt="Creed III">
+        <h3>CREED III</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2023</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Drama, Acción</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 57 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Después de dominar el mundo del boxeo, Adonis Creed ha prosperado tanto en su carrera como en su vida familiar. Cuando un amigo de la infancia y ex prodigio de boxeo, Damien Anderson, resurge después de cumplir una larga sentencia en prisión, está ansioso por demostrar que merece su disparo en el ring. El enfrentamiento entre los antiguos amigos es más que una pelea. Para resolver el puntaje, Adonis debe poner su futuro en la línea para luchar contra Damien, un luchador que no tiene nada que perder.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzN2bmNzNzF3MHBjdA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "NO MANCHES FRIDA" -->
+
+<!-- NO MANCHES FRIDA -->
+
+<!-- Modal de No Manches Frida -->
+<div id="movieNoManchesFrida" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieNoManchesFrida')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/6HfyXfIEywLa2HvcswKi44dDKxL.jpg" alt="No Manches Frida">
+        <h3>NO MANCHES FRIDA</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2016</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 54 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Es la historia de Zequi, un ladrón de bancos recientemente publicado que va a recuperar el dinero robado enterrado por su cómplice boba antes de ir a la cárcel. Vuelven al sitio sólo para encontrar que Frida Kahlo alta ha construido un gimnasio con el botín. Para conseguir el dinero, se hacen pasar por un maestro sustituto para una escuela que no puede estar al nivel de los maestros de todo. Zequi entra dispuesto a dar la ley pero rápidamente se da cuenta de que la vida en el interior puede haber sido más fácil de manejar que una escuela llena de adolescentes salvajes y rebeldes.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzZteW15NzZjbHB3aA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- NO MANCHES FRIDA 2 -->
+
+<!-- Modal de No Manches Frida 2 -->
+<div id="movieNoManchesFrida2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieNoManchesFrida2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/rG7rDoTe1ZEa936eonDCkV76nkx.jpg" alt="No Manches Frida 2">
+        <h3>NO MANCHES FRIDA 2</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2019</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 42 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Zequi (Omar Chaparro) y Lucy (Martha Higareda) están por casarse. Todo parece marchar color de rosa y están a un día de la boda cuando llega la despedida de soltero. A pesar de que él promete portarse bien y no excederse, las cosas se salen de control.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL29kaWtuYW94ZGttOQ==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "EL STAND DE LOS BESOS" -->
+
+<!-- EL STAND DE LOS BESOS -->
+
+<!-- Modal de El Stand de los Besos -->
+<div id="movieElStandDeLosBesos" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieElStandDeLosBesos')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/7Dktk2ST6aL8h9Oe5rpk903VLhx.jpg" alt="El Stand de los Besos">
+        <h3>EL STAND DE LOS BESOS</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2018</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 45 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Elle nunca imaginó que el primer beso daría para tanto. Pero, a pesar de que ha conseguido salir con el chico más guapo del instituto, está a punto de perder a su mejor amigo de toda la vida.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3NxZW4wM3AzaWR1aA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- EL STAND DE LOS BESOS 2 -->
+
+<!-- Modal de El Stand de los Besos 2 -->
+<div id="movieElStandDeLosBesos2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieElStandDeLosBesos2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/mb7wQv0adK3kjOUr9n93mANHhPJ.jpg" alt="El Stand de los Besos 2">
+        <h3>EL STAND DE LOS BESOS 2</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2020</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Comedia, Romance</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 12 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Elle Evans regresa para su último año de preparatoria y se enfrenta a nuevas decisiones que afectarán su relación con Noah y con su mejor amigo Lee. El Stand de los Besos 2 continúa con la historia de Elle y sus amigos mientras navegan por la vida y las relaciones.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3ZsMXhvdW04b2ZrZA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- EL STAND DE LOS BESOS 3 -->
+
+<!-- Modal de El Stand de los Besos 3 -->
+<div id="movieElStandDeLosBesos3" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieElStandDeLosBesos3')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/c7xcqnMDVQ5v1hJBm3AZ5YikNe6.jpg" alt="El Stand de los Besos 3">
+        <h3>EL STAND DE LOS BESOS 3</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2021</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 53 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Es el verano antes de que Elle se dirija a la universidad y tiene que tomar una decisión secreta. Elle ha sido aceptada en Harvard, donde se está matriculando su novio Noah, y también en Berkeley, donde se dirige su mejor amiga Lee. ¿Qué camino debería elegir?</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzJ3cDN2eTdkemw1Nw==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "COMANDO ESPECIAL" -->
+
+<!-- COMANDO ESPECIAL -->
+
+<!-- Modal de Comando Especial -->
+<div id="movieComandoEspecial" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieComandoEspecial')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/q0iOz3PuS2kLKBC1mSGNRVzNxu5.jpg" alt="Comando Especial">
+        <h3>COMANDO ESPECIAL</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2012</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Comedia, Crimen</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 49 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Dos jóvenes agentes de la ley se hacen pasar por alumnos de instituto para desarticular una red de narcotráfico. Schmidt y Jenko fueron enemigos en el colegio pero, cuando años más tarde se reencuentran en la academia de policía, terminan haciéndose amigos. Puede que no sean los mejores agentes, pero les llega su gran oportunidad de demostrar lo que valen cuando se unen a la unidad de la policía secreta Jump Street, comandada por el capitán Dickson. Entonces cambian sus armas e insignias por las mochilas y utilizan su apariencia juvenil para infiltrarse en un instituto. El problema es que los jóvenes de hoy no se parecen en nada a los de años atrás, y Schmidt y Jenko descubren que todo lo que creían saber sobre la adolescencia, el sexo, las drogas y el rock and roll era completamente erróneo.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3pkb3FwcTVuMXkwdQ==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- COMANDO ESPECIAL 2 -->
+
+<!-- Modal de Comando Especial 2 -->
+<div id="movieComandoEspecial2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieComandoEspecial2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/850chzYHYbT3IISl6Q7dbBuFP2B.jpg" alt="Comando Especial 2">
+        <h3>COMANDO ESPECIAL 2</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2014</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Crimen, Comedia, Acción</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 51 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> La pareja de policías formada por Schmidt y Jenko vuelve a la carga después del éxito de la operación contra la red de narcotraficantes en el instituto. En esta ocasión, los agentes de la ley siguen perteneciendo a la unidad secreta Jump Street y tendrán que infiltrarse en una universidad para llevar a cabo una arriesgada investigación. Una nueva aventura que pondrá a prueba al dúo cada vez mejor compenetrado.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3d4djZ2eDhqN3VsYg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "A TRAVÉS DE MI VENTANA" -->
+
+<!-- A TRAVÉS DE MI VENTANA -->
+
+<!-- Modal de A través de mi ventana -->
+<div id="movieAtravésDeMiVentana" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieAtravésDeMiVentana')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/3F5MkMadQOWiZNVaNuOuw6UaK7a.jpg" alt="A través de mi ventana">
+        <h3>A TRAVÉS DE MI VENTANA</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2022</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Drama, Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 53 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Raquel lleva toda la vida loca por Ares, su atractivo y misterioso vecino. Lo observa sin ser vista y es que, muy a su pesar, no han intercambiado ni una palabra. Raquel tiene muy claro su objetivo: conseguir que Ares se enamore de ella. Pero ella no es una niña inocente y no está dispuesta a perderlo todo por el camino, y mucho menos a sí misma...</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3dnYm9va2NyNHp6Zw==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- A TRAVÉS DEL MAR -->
+
+<!-- Modal de A través del mar -->
+<div id="movieAtravésDeMiVentana2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieAtravésDeMiVentana2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/hisRiTK0zCP1sXtlCSrmFRVOVlz.jpg" alt="A través de mi ventana 2">
+        <h3>A TRAVÉS DEL MAR</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2023</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Drama, Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 51 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Tras pasar un año separados, Raquel y Ares se reencuentran durante un apasionado viaje a la playa. Así obtendrán la respuesta a la pregunta de si su amor puede sobrevivir a los nuevos coqueteos y las inseguridades.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3ByeHIwaDdzbGsyZA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- A TRAVÉS DE TU MIRADA -->
+
+<!-- Modal de A través de tu mirada -->
+<div id="movieAtravésDeMiVentana3" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieAtravésDeMiVentana3')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/1RxPBKMpHlcm5PORiPo6LHUV2ft.jpg" alt="A través de mi ventana 3">
+        <h3>A TRAVÉS DE TU MIRADA</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2024</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Drama, Comedia</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 45 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Después de lo que pasó en verano, Ares y Raquel no ven la forma de seguir con su relación y deciden separarse. Pero cuando se reencuentran en invierno en Barcelona, no pueden negar el amor y el deseo que sienten el uno por el otro. ¿Darán con la fórmula para volver a estar juntos?</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2EzZm55OXRpN3I2Yg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "365 DÍAS" -->
+
+<!-- 365 DÍAS -->
+
+<!-- Modal de 365 Días -->
+<div id="movie365Dias1" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movie365Dias1')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/vth3EjIGimIzVkDU7bRN3AwtPOy.jpg" alt="365 Días">
+        <h3>365 DÍAS</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2020</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Drama</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 54 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Massimo es miembro de la mafia siciliana y Laura es una directora de ventas. Ella no espera que un viaje a Sicilia salve su relación, pero Massimo la secuestrará durante 365 días para que se enamore de él.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2xvc2k2dDFpY2o2ag==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- 365 DÍAS: AQUEL DÍA -->
+
+<!-- Modal de 365 Días: Aquel día -->
+<div id="movie365Dias2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movie365Dias2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/bbTDQZT4qABLpeN2dcfp4OAOQvO.jpg" alt="365 Días: Aquel día">
+        <h3>365 DÍAS: AQUEL DÍA</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2022</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Drama</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 51 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Laura y Massimo vuelven más fuertes que nunca, pero las ataduras familiares de Massimo y un misterioso hombre que quiere conquistar a Laura complican su relación.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzhtamcyNjlsY2o1eQ==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- 365 DÍAS MÁS-->
+
+<!-- Modal de 365 Días: Hoy -->
+<div id="movie365Dias3" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movie365Dias3')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/dlyzCeI8wojBsUWdkNdO5AXtmZq.jpg" alt="365 Días: Hoy">
+        <h3>365 DÍAS MÁS</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2024</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Romance, Drama</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 53 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> La relación de Laura y Massimo pende de un hilo mientras intentan superar los problemas de confianza y los celos, mientras que un tenaz Nacho trabaja para separarlos.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzh1YmE0azlrcHAybA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "REBEL MOON" -->
+
+<!-- REBEL MOON: PART 1 -->
+
+<!-- Modal de Rebel Moon: Parte 1 -->
+<div id="movieRebelMoon1" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieRebelMoon1')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/ui4DrH1cKk2vkHshcUcGt2lKxCm.jpg" alt="Rebel Moon: Parte 1">
+        <h3>REBEL MOON: PARTE 1</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2023</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Ciencia ficción, Drama, Acción, Bélica</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 16 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Cuando los crueles ejércitos del Mundomadre amenazan un poblado pacífico de una luna remota, una misteriosa forastera se convierte en su mejor baza para sobrevivir.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2tqcWltbXgyd3Q2dA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- REBEL MOON: PART 2 -->
+
+<!-- Modal de Rebel Moon: Parte 2 -->
+<div id="movieRebelMoon2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieRebelMoon2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/95gnJZIk2rEkMO0Ch46x5CVjnms.jpg" alt="Rebel Moon: Parte 2">
+        <h3>REBEL MOON: PARTE 2</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2024</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Ciencia Ficción, Aventura</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 3 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Los rebeldes se preparan para luchar contra las implacables fuerzas del Mundomadre mientras se forjan vínculos inquebrantables, surgen nuevos héroes y nacen las leyendas.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzUwZWdvbGJlcHByaQ==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "GODZILLA" -->
+
+<!-- GODZILLA -->
+
+<!-- Modal de Godzilla -->
+<div id="movieGodzilla2014" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieGodzilla2014')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/1t0FcqSsBs51PDhDkFd7EiEytU6.jpg" alt="Godzilla">
+        <h3>GODZILLA</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2014</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Drama, Ciencia ficción</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 3 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Gareth Edwards dirige este "reboot", que se sitúa antes en el tiempo que la película de 1998 dirigida por Roland Emmerich, que nos llevará a conocer los orígenes del famoso monstruo japonés gigante Godzilla. Protagonizada por Bryan Cranston, ganador del Globo de Oro por Breaking Bad, que da vida a Joe Brody un científico que descubre que algo terrible está a punto de suceder cuando una serie de tsunamis comienzan a llegar a las costas, anticipando la llegada de numerosos monstruos de gran tamaño mientras el ejército intenta defenderse en vano.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL3BhZnFweTNvNzJ5dA==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- GODZILLA: EL REY DE LOS MONSTRUOS -->
+
+<!-- Modal de Godzilla: El rey de los Monstruos -->
+<div id="movieGodzillaKingOfMonsters" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieGodzillaKingOfMonsters')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/fQ40gmFM4p03tXwMxQQKh2cCBW4.jpg" alt="Godzilla 2: El rey de los Monstruos">
+        <h3>GODZILLA: EL REY DE LOS MONSTRUOS</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2019</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Ciencia ficción, Acción</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 11 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Los criptozoólogos de la agencia Monarch se enfrentan a un grupo de enormes monstruos: Godzilla, Mothra, Rodan y el enemigo de la humanidad, King Ghidorah. Estas ancianas criaturas harán todo lo posible por sobrevivir, poniendo en riesgo la existencia del ser humano en el planeta.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzdyYWJxeHh3N3Rhbg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- GODZILLA VS. KONG -->
+
+<!-- Modal de Godzilla vs. Kong -->
+<div id="movieGodzillaVsKong" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieGodzillaVsKong')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg" alt="Godzilla vs. Kong">
+        <h3>GODZILLA VS. KONG</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2021</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Ciencia ficción, Aventura</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 1h 53 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Godzilla y Kong, dos de las fuerzas más poderosas de un planeta habitado por todo tipo de aterradoras criaturas, se enfrentan en un espectacular combate que sacude los cimientos de la humanidad. Monarch (Kyle Chandler) se embarca en una misión de alto riesgo y pone rumbo hacia territorios inexplorados para descubrir los orígenes de estos dos titanes, en un último esfuerzo por tratar de salvar a dos bestias que parecen tener las horas contadas sobre la faz de la Tierra.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2Vzejh5cmZpeHQ2OQ==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- GODZILLA Y KONG: EL NUEVO IMPERIO -->
+
+<!-- Modal de Godzilla y Kong: El nuevo imperio-->
+<div id="movieGodzillaXKong" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieGodzillaXKong')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/z1p34vh7dEOnLDmyCrlUVLuoDzd.jpg" alt="Godzilla x Kong: The New Empire">
+        <h3>GODZILLA Y KONG: EL NUEVO IMPERIO</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2024</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Acción, Aventura, Ciencia ficción</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 55 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Una aventura cinematográfica completamente nueva, que enfrentará al todopoderoso Kong y al temible Godzilla contra una colosal amenaza desconocida escondida dentro de nuestro mundo. La nueva y épica película profundizará en las historias de estos titanes, sus orígenes y los misterios de Isla Calavera y más allá, mientras descubre la batalla mítica que ayudó a forjar a estos seres extraordinarios y los unió a la humanidad para siempre.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL2h2ZXg5dmtmZTNxag==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- AQUI ESTA LA SAGA DE "DUNE" -->
+
+<!-- DUNA -->
+
+<!-- Modal de Dune -->
+<div id="movieDune2021" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieDune2021')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune: Parte 1">
+        <h3>DUNE</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2021</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Ciencia Ficción, Aventura</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 35 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> En un lejano futuro, la galaxia conocida es gobernada mediante un sistema feudal de casas nobles bajo el mandato del Emperador. Las alianzas y la política giran entorno a un pequeño planeta, Dune, del que extrae la 'especia melange', la materia prima que permite los viajes espaciales. La Casa Atreides, bajo el mandato del Duque Leto Atreides recibe el encargo de custodiar el planeta, relevando en la encomienda a sus históricos enemigos, los Harkonnen. Paul Atreides, hijo del duque, se verá atrapado en las intrigas políticas mientras descubre el destino que le deparan los desiertos de Dune.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lL21wZTdzbHo3ZjZocg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+<!-- DUNE: PARTE 2-->
+
+<!-- Modal de Dune: Parte 2 -->
+<div id="movieDunePart2" class="modal">
+    <div class="modal-content-movie">
+        <span class="close" onclick="closeModal('movieDunePart2')">&times;</span>
+        <img src="https://image.tmdb.org/t/p/original/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg" alt="Duna: Parte 2">
+        <h3>DUNE: PARTE 2</h3>
+        <p><i class="fas fa-calendar"></i> <strong>Año:</strong> 2024</p>
+        <p><i class="fas fa-film"></i> <strong>Género:</strong> Ciencia Ficción, Aventura</p>
+        <p><i class="fas fa-clock"></i> <strong>Duración:</strong> 2h 45 mins</p>
+        <p><i class="fas fa-book"></i> <strong>Sinopsis:</strong> Sigue el viaje mítico de Paul Atreides mientras se une a Chani y los Fremen en una guerra de venganza contra los conspiradores que destruyeron a su familia. Al enfrentarse a una elección entre el amor de su vida y el destino del universo conocido, Paul se esfuerza por evitar un futuro terrible que solo él puede prever.</p>
+        <a href="https://vpn-movie-ofc.blogspot.com/2024/05/embed_27.html?r=aHR0cHM6Ly9wbGF5ZXJ3aXNoLmNvbS9lLzJwaDd5MGljNXN6eg==" class="button" target="_blank">VER PELÍCULA</a>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+    }
+
+    function openMovieModal(movieId) {
+        document.getElementById(movieId).style.display = "block";
+    }
+</script>
+
+</body>
+</html>
